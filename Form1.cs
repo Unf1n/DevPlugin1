@@ -14,6 +14,8 @@ namespace DevPlugin
 {
     public partial class Form1 : Form
     {
+        string path = "";
+        string path1 = "";
         public Form1()
         {
             InitializeComponent();
@@ -21,36 +23,70 @@ namespace DevPlugin
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string path = "";
+          
             string[] args = Environment.GetCommandLineArgs();
             int a=0;
             foreach (string arg in args)
             {
-                if (a == 1)
+                if (a == 0)
                 {
-                    path= arg;
+                    path1= arg;
+                    int len = path1.IndexOf("\\DevPlugin.exe");
+                    if (len > 0)
+                    {
+                        path1 = path1.Substring(0,len);
+                    }
                 }
                     a++;
             }
 
-            string filename = path;
-            var lines = File.ReadAllLines(filename);
-            for (int i = 1; i < lines.Length; i++)
+           
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if(path == "")
             {
-                var line = lines[i].Split('=');
-                switch (i)
-                {
-                    case 1:
-                        label2.Text = line[1];
-                        break;
-                    case 3:
-                        label5.Text = line[1];
-                        break;
-                    case 4:
-                        comboBox1.Items.Add(line[1]);
-                        break;
-                }
+                MessageBox.Show("Выберите путь для файла");
             }
+            else
+            {
+                string filename = path1 + "\\data\\data1";
+                var lines = File.ReadAllLines(filename);
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    if (lines[i].IndexOf("<RootNamespace>") > 0)
+                    {
+                        lines[i] = $"    <RootNamespace>TCG.{textBox1.Text}</RootNamespace>";
+                    }
+                }
+
+                Directory.CreateDirectory(path + '\\' + textBox1.Text);
+                Directory.CreateDirectory(path + '\\' + textBox1.Text + "\\TCG.Fractures");
+                File.Create(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG." + textBox1.Text);
+                StreamWriter file = new StreamWriter(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG." + textBox1.Text);
+                file.Write(lines);
+                //закрыть для сохранения данных
+                file.Close();
+                File.Create(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG.Fractures.csproj.backup_13.08.2015 22-17-53");
+
+
+            }
+        }
+        
+        private void textBox3_MouseClick(object sender, MouseEventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                path = dialog.SelectedPath;
+                textBox3.Text = path;
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
