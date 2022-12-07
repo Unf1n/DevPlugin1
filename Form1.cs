@@ -45,17 +45,35 @@ namespace DevPlugin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(path == "")
+            string[] lines = new string[500];
+            if (path == "")
             {
                 MessageBox.Show("Выберите путь для файла");
             }
             else
             {
-                string filename = path1 + "\\data\\data1";
-                var lines = File.ReadAllLines(filename);
+                string filename = path1 + "\\data\\data.csproj";
+                MessageBox.Show(path1);
+                MessageBox.Show(filename);
+
+                using (StreamReader sr = new StreamReader(filename, System.Text.Encoding.Default))
+                {
+                    var list = new List<string>();
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+                        list.Add(line);
+                        Console.WriteLine(list[list.Count - 1]);
+                    }
+            sr.Close();
+                    lines = list.ToArray();
+                }
+
+
+
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    if (lines[i].IndexOf("<RootNamespace>") > 0)
+                    if (lines[i].IndexOf("<RootNamespace>(\\W+?)</RootNamespace>") > 0)
                     {
                         lines[i] = $"    <RootNamespace>TCG.{textBox1.Text}</RootNamespace>";
                     }
@@ -63,11 +81,8 @@ namespace DevPlugin
 
                 Directory.CreateDirectory(path + '\\' + textBox1.Text);
                 Directory.CreateDirectory(path + '\\' + textBox1.Text + "\\TCG.Fractures");
-                File.Create(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG." + textBox1.Text);
-                StreamWriter file = new StreamWriter(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG." + textBox1.Text);
-                file.Write(lines);
-                //закрыть для сохранения данных
-                file.Close();
+
+                File.AppendAllLines(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG." + textBox1.Text,lines);
                 File.Create(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG.Fractures.csproj.backup_13.08.2015 22-17-53");
 
 
