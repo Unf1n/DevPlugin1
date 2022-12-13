@@ -73,9 +73,13 @@ namespace DevPlugin
 
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    if (lines[i].IndexOf("<RootNamespace>(\\W+?)</RootNamespace>") > 0)
+                    if (lines[i].IndexOf("<RootNamespace>") > 0)
                     {
-                        lines[i] = $"    <RootNamespace>TCG.{textBox1.Text}</RootNamespace>";
+                        lines[i] = $"<RootNamespace>TCG.{textBox1.Text}</RootNamespace>";
+                    }
+                    if (lines[i].IndexOf("<AssemblyName>") > 0)
+                    {
+                        lines[i] = $"<AssemblyName>{textBox1.Text}</AssemblyName>";
                     }
                 }
 
