@@ -57,7 +57,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(28, 98);
+            this.label3.Location = new System.Drawing.Point(28, 148);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 20);
             this.label3.TabIndex = 2;
@@ -67,7 +67,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(28, 140);
+            this.label4.Location = new System.Drawing.Point(28, 100);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(112, 20);
             this.label4.TabIndex = 3;
@@ -86,7 +86,7 @@
             "2020",
             "2021",
             "2022"});
-            this.comboBox1.Location = new System.Drawing.Point(194, 142);
+            this.comboBox1.Location = new System.Drawing.Point(194, 102);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(183, 21);
             this.comboBox1.TabIndex = 4;
@@ -101,7 +101,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(194, 100);
+            this.textBox2.Location = new System.Drawing.Point(194, 148);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(183, 20);
             this.textBox2.TabIndex = 8;

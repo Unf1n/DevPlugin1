@@ -53,85 +53,125 @@ namespace DevPlugin
                 }
             return false;
         }
+        public string[] WriteF(string file)
+        {
+            string[] f = new string[500];
+            using (StreamReader sr = new StreamReader(file, System.Text.Encoding.Default))
+            {
+                var list = new List<string>();
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine();
+                    list.Add(line);
+                    Console.WriteLine(list[list.Count - 1]);
+                }
+                sr.Close();
+                f = list.ToArray();
+            }
+            return f;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
-            string[] lines = new string[500];
+            string[] TCGClines = new string[500];
+            string[] linesSLN = new string[500];
+            string[] linesAPINI = new string[500];
+
+
             if (path == "")
             {
                 MessageBox.Show("Выберите путь для файла");
             }
             else
             {
-                string filename = path1 + "\\simple-plugin\\TCG.SimplePlugin\\TCG.SimplePlugin.csproj";
-                MessageBox.Show(path1);
-                MessageBox.Show(filename);
+                string filenameTCG = path1 + "\\simple-plugin\\TCG.SimplePlugin\\TCG.SimplePlugin.csproj";
+                string filenameSLN = path1 + "\\simple-plugin\\TCG.SimplePlugin.sln";
+                string filenameAPINI = path1 + "\\simple-plugin\\Appinfo.ini";
 
-                using (StreamReader sr = new StreamReader(filename, System.Text.Encoding.Default))
+                TCGClines = WriteF(filenameTCG);
+                linesSLN = WriteF(filenameSLN);
+                linesAPINI= WriteF(filenameAPINI);
+
+                var guID1 = Guid.NewGuid();
+                string strid1 = guID1.ToString();
+
+
+
+                for (int i = 1; i < linesSLN.Length; i++)
                 {
-                    var list = new List<string>();
-                    while (!sr.EndOfStream)
+                    
+                       linesSLN[4] = $"Project(\"{{{Guid.NewGuid().ToString()}}}\") = \"TCG.{textBox1.Text}\", \"TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj\", \"{{{strid1}}}\"";
+
+                    if (linesSLN[i].IndexOf("GlobalSection(ProjectConfigurationPlatforms) = postSolution") > 0)
                     {
-                        string line = sr.ReadLine();
-                        list.Add(line);
-                        Console.WriteLine(list[list.Count - 1]);
+                        MessageBox.Show("123");
+                        linesSLN[i + 1] = $"\t\t{{{strid1}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU";
+                        linesSLN[i + 2] = $"\t\t{{{strid1}}}.Debug|Any CPU.Build.0 = Debug|Any CPU";
+                        linesSLN[i + 3] = $"\t\t{{{strid1}}}.Release|Any CPU.ActiveCfg = Release|Any CPU";
+                        linesSLN[i + 4] = $"\t\t{{{strid1}}}.Release|Any CPU.Build.0 = Release|Any CPU";
                     }
-            sr.Close();
-                    lines = list.ToArray();
+                    if (linesSLN[i].IndexOf("SolutionGuid ") > 0)
+                        linesSLN[i] = $"\t\tSolutionGuid = {{{Guid.NewGuid().ToString()}}}";
+
+                }
+                for (int i = 1; i < TCGClines.Length; i++)
+                {
+                    if (change(" <RootNamespace>(\\w+?.\\w+?)</RootNamespace>", TCGClines[i]))
+                        TCGClines[i] = $"    <RootNamespace>TCG.{textBox1.Text}</RootNamespace>";
+                    if (change(" <AssemblyName>(\\w+?.\\w+?)</AssemblyName>", TCGClines[i]))
+                        TCGClines[i] = $"    <AssemblyName>TCG.{textBox1.Text}</AssemblyName>";
+                    if (change("<ProductVersion>(\\w+?.\\w+?.\\w+?)</ProductVersion>", TCGClines[i]))
+                        TCGClines[i] = $"    <ProductVersion>{textBox4.Text}</ProductVersion>";
+                    if (TCGClines[i].IndexOf("<ProjectGuid>{034805E2-9B80-4F18-930B-0E789C4B9A8C}</ProjectGuid>") > 0)
+                        TCGClines[i] = $"    <ProjectGuid>{{{strid1}}}</ProjectGuid>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Data.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Data.dll</HintPath>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.Modeling.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Slb.Ocean.Petrel.Modeling.dll</HintPath>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2020\\Public\\Slb.Ocean.Units.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Units.dll</HintPath>";
+
+
+                    if (TCGClines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\slb.ocean.core.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\slb.ocean.core.dll</HintPath>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\slb.ocean.petrel.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\slb.ocean.petrel</HintPath>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\Slb.Ocean.Basics.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\Slb.Ocean.Basics.dll</HintPath>";
+
+                    if (TCGClines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\Slb.Ocean.Geometry.dll</HintPath>") > 0)
+                        TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\Slb.Ocean.Geometry.dll</HintPath>";
+
                 }
 
-               var guID1 = Guid.NewGuid();
-                string strid = guID1.ToString();
-                for (int i = 1; i < lines.Length; i++)
+                for (int i = 1; i < linesAPINI.Length; i++)
                 {
-                    if (change(" <RootNamespace>(\\w+?.\\w+?)</RootNamespace>", lines[i]))
-                        lines[i] = $"<RootNamespace>{textBox1.Text}</RootNamespace>";
-                    if (change(" <AssemblyName>(\\w+?.\\w+?)</AssemblyName>", lines[i]))
-                        lines[i] = $" <AssemblyName>{textBox1.Text}</AssemblyName>";
-                    if (change("<ProductVersion>(\\w+?.\\w+?.\\w+?)</ProductVersion>", lines[i]))
-                        lines[i] = $"<ProductVersion>{textBox4.Text}</ProductVersion>";
-                    if (change("<ProductVersion>(\\w+?.\\w+?.\\w+?)</ProductVersion>", lines[i]))
-                        lines[i] = $"<ProductVersion>{textBox4.Text}</ProductVersion>";
-                    if (lines[i].IndexOf("<ProjectGuid>{034805E2-9B80-4F18-930B-0E789C4B9A8C}</ProjectGuid>") > 0)
-                        lines[i] = $"<ProjectGuid>{{{strid}}}</ProjectGuid>";
 
-                    if (lines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Data.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Data.dll</HintPath>";
-
-                    if (lines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>>";
-
-                    if (lines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.Modeling.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Slb.Ocean.Petrel.Modeling.dll</HintPath>";
-
-                    if (lines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>";
-
-                    if (lines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2013\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>";
-
-                    if (lines[i].IndexOf("<HintPath>C:\\Program Files\\Schlumberger\\Petrel 2020\\Public\\Slb.Ocean.Units.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Units.dll</HintPath>";
-
-
-                    if (lines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\slb.ocean.core.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\slb.ocean.core.dll</HintPath>";
-
-                    if (lines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\slb.ocean.petrel.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\slb.ocean.petrel</HintPath>";
-
-                    if (lines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\Slb.Ocean.Basics.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\Slb.Ocean.Basics.dll</HintPath>";
-
-                    if (lines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\Slb.Ocean.Geometry.dll</HintPath>") > 0)
-                        lines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\Slb.Ocean.Geometry.dll</HintPath>";
-
+                    linesAPINI[1] = $"AppName={textBox1.Text}";
+                    linesAPINI[3] = $"Version={textBox4.Text}";
+                    linesAPINI[4] = $"PetrelVersion={comboBox1.Text}.{textBox2.Text}(64-bit)";
                 }
 
                 Directory.CreateDirectory(path + '\\' + textBox1.Text);
                 Directory.CreateDirectory(path + '\\' + textBox1.Text + "\\TCG.Fractures");
 
-                File.AppendAllLines(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG." + textBox1.Text,lines);
-                File.Create(path + '\\' + textBox1.Text + "\\TCG.Fractures\\TCG.Fractures.csproj.backup_13.08.2015 22-17-53");
+                File.AppendAllLines($"{path}\\{textBox1.Text}\\TCG.Fractures\\TCG.{textBox1.Text}.csproj",TCGClines);
+                File.AppendAllLines($"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}.sln", linesSLN);
+                File.AppendAllLines($"{path}\\{textBox1.Text}\\Appinfo.ini", linesAPINI);
+                File.Create($"{path}\\{textBox1.Text}\\TCG.Fractures\\TCG.Fractures.csproj.backup_13.08.2015 22-17-53");
 
 
             }
