@@ -246,6 +246,7 @@ namespace DevPlugin
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Module.cs", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Module.cs", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\newkey.snk", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\newkey.snk", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.resx", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Workstep1UI.resx", true);
+                File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\build_plugin.bat", $"{path}\\{textBox1.Text}\\build_plugin.bat", true);
 
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Resources\Logo_Timal_Final32x32.png", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Resources\\Logo_Timal_Final32x32.png", true);
 
@@ -255,7 +256,7 @@ namespace DevPlugin
 
                 File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\Plugin.cs", linesPlugincs);
                 File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\plugin.xml", linesPlugin);
-                File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\TCG.SimplePlugin.csproj.user", linesCSpro);
+                File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\TCG.{textBox1.Text}.csproj.user", linesCSpro);
                 File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\Workstep1.cs", linesWorkstep1);
                 File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\Workstep1UI.cs", linesWorkstep1UI);
                 File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\Workstep1UI.Designer.cs", linesWorkstep1UIDesigner);
