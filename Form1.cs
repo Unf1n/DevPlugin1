@@ -169,7 +169,6 @@ namespace DevPlugin
 
                     if (linesSLN[i].IndexOf("GlobalSection(ProjectConfigurationPlatforms) = postSolution") > 0)
                     {
-                        MessageBox.Show("123");
                         linesSLN[i + 1] = $"\t\t{{{strid1}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU";
                         linesSLN[i + 2] = $"\t\t{{{strid1}}}.Debug|Any CPU.Build.0 = Debug|Any CPU";
                         linesSLN[i + 3] = $"\t\t{{{strid1}}}.Release|Any CPU.ActiveCfg = Release|Any CPU";
