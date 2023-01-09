@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Module.cs" />
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Plugin.cs" />
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1.cs" />
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.cs" />
+    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.Designer.cs">
+      <DependentUpon>Workstep1UI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +61,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.resx">
+      <DependentUpon>Workstep1UI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -65,7 +75,14 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="bin\Debug\simple-plugin\AppInfo.ini" />
+    <None Include="bin\Debug\simple-plugin\build_plugin.bat" />
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\app.config" />
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Fractures.key.snk" />
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\newkey.snk" />
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\TCG.SimplePlugin.csproj" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -78,6 +95,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin.sln" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\plugin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\TCG.SimplePlugin.csproj.user" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
