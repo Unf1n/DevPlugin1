@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InstalledPlugins xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Plugin>
+    <Name>TCG.SimplePlugin</Name>
+    <Contact>plugins@timal.kz</Contact>
+    <PluginTypeName>TCG.SimplePlugin.Plugin, TCG.SimplePlugin, Version=1.0.3.0, Culture=neutral, PublicKeyToken=9de9635fa700ae8a</PluginTypeName>
+    <PluginUri>http://www.timal.kz/</PluginUri>
+    <PluginId>://TCG.SimplePlugin.Plugin/1.0.3.0</PluginId>
+    <Trust PublicKeyToken="">Default</Trust>
+    <ReleaseDate>2022-12-16</ReleaseDate>
+    <Author>Timal Consulting Group</Author>
+    <AppVersion>2013</AppVersion>
+    <Modules>
+      <Module TypeName="TCG.SimplePlugin.Module, TCG.SimplePlugin, Version=1.0.3.0, Culture=neutral, PublicKeyToken=9de9635fa700ae8a" />
+    </Modules>
+    <Assemblies>
+      <Assembly Name="LogicNP.CryptoLicensing, Version=10.0.0.0, Culture=neutral, PublicKeyToken=4a3c0a4c668b48b4" />
+      <Assembly Name="SimpleCore, Version=20.0.0.1, Culture=neutral, PublicKeyToken=88d97a06927835c2" />
+      <Assembly Name="SimpleFonts, Version=20.0.0.1, Culture=neutral, PublicKeyToken=ac952a95f1607105" />
+      <Assembly Name="TCG.SimplePlugin, Version=1.0.3.0, Culture=neutral, PublicKeyToken=9de9635fa700ae8a" />
+      <Assembly Name="Timal.Toolbox.Misc, Version=20.0.0.1, Culture=neutral, PublicKeyToken=8e6b5a2c681588ec" />
+      <Assembly Name="TimalLicensing, Version=20.0.0.1, Culture=neutral, PublicKeyToken=9167f29e3c715fab" />
+    </Assemblies>
+    <assemblyBinding />
+    <StartMode>Startup</StartMode>
+    <StartupAction>None</StartupAction>
+  </Plugin>
+</InstalledPlugins>
