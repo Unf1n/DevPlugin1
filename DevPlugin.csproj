@@ -33,6 +33,126 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Slb.Ocean.Basics">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Basics.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Catalogs">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Catalogs.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Coordinates">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Coordinates.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Core">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Core.ReferenceImpl">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Core.ReferenceImpl.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Data">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Geometry">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Configuration">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Data.Persistence">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Data.Persistence.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.DomainObject.FrameworkModeling">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.DomainObject.FrameworkModeling.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.DomainObjectExtensions">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.DomainObjectExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.DomainObjectExtensions.Prestack">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.DomainObjectExtensions.Prestack.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Drilling">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Drilling.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Geology">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Geology.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Intersect">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Intersect.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Microseismic">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Microseismic.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Modeling">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Modeling.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Polygon">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Polygon.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Production">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Production.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.ReservoirEngineering">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.ReservoirEngineering.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Resources">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Resources.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Seismic">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Seismic.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Simulation.EclipseKeywords">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Simulation.EclipseKeywords.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.StructuralGeology">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.StructuralGeology.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Testing">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.UI.Controls">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.UI.Visualization3D">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.UI.Visualization3D.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.UI.WellSection">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.UI.WellSection.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.UI.Wpf.Controls">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.UI.Wpf.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Well">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Well.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Petrel.Well.Treatment">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Petrel.Well.Treatment.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Studio.Find">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Studio.Find.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Studio.Find.Index">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Studio.Find.Index.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Studio.Find.Petrel">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Studio.Find.Petrel.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Studio.Knowledge.Petrel">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Studio.Knowledge.Petrel.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Trajectory">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Trajectory.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Units">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Units.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Units.ReferenceCatalog">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Units.ReferenceCatalog.dll</HintPath>
+    </Reference>
+    <Reference Include="Slb.Ocean.Units.ReferenceImpl">
+      <HintPath>bin\Debug\dll\Slb.Ocean.Units.ReferenceImpl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -83,6 +203,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\49198ca9-2e2d-46ae-be81-9d580d2510b5.vsidx" />
+    <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\e6c3cf6e-dc60-47bf-9431-9e9804f9d360.vsidx" />
+    <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\read.lock" />
     <None Include="bin\Debug\simple-plugin\AppInfo.ini" />
     <None Include="bin\Debug\simple-plugin\build_plugin.bat" />
     <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\app.config" />
@@ -107,6 +230,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\merges\" />
+    <Folder Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\v17\" />
     <Folder Include="bin\Debug\simple-plugin\bin\" />
     <Folder Include="bin\Release\" />
   </ItemGroup>

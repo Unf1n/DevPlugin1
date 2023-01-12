@@ -3,7 +3,7 @@ using Slb.Ocean.Core;
 using Slb.Ocean.Petrel;
 using Slb.Ocean.Petrel.UI;
 using Slb.Ocean.Petrel.Workflow;
-using TCG.TimalLicensing;
+// using TCG.TimalLicensing;
 
 namespace TCG.SimplePlugin
 {

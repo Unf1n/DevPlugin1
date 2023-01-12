@@ -4,8 +4,8 @@ using Slb.Ocean.Core;
 using Slb.Ocean.Petrel;
 using Slb.Ocean.Petrel.UI;
 using Slb.Ocean.Petrel.Workflow;
-using TCG.TimalLicensing;
-using Timal.Toolbox.Misc;
+//using TCG.TimalLicensing;
+//using Timal.Toolbox.Misc;
 
 namespace TCG.SimplePlugin
 {
@@ -173,9 +173,10 @@ namespace TCG.SimplePlugin
 			{
 				get
 				{
-					IniParser ini = new IniParser();
-					ini.LoadFromString(Properties.Resources.AppInfo);
-					return ini.GetSetting("Root", "AppName", "Unnamed");
+					//IniParser ini = new IniParser();
+					//ini.LoadFromString(Properties.Resources.AppInfo);
+					//return ini.GetSetting("Root", "AppName", "Unnamed");
+					return "1";
 				}
 			}
 			/// <summary>
@@ -209,7 +210,7 @@ namespace TCG.SimplePlugin
 			/// <returns>a Windows.Forms.Control to edit the argument package with</returns>
 			protected override System.Windows.Forms.Control CreateDialogUICore(Workstep workstep, object argumentPackage, WorkflowContext context)
 			{
-				if (new LicenseData(Properties.Resources.AppInfo).HasLicense() == false) return null;
+				//if (new LicenseData(Properties.Resources.AppInfo).HasLicense() == false) return null;
 				return new Workstep1UI((Workstep1)workstep, (Arguments)argumentPackage, context);
 			}
 		}

@@ -23,6 +23,8 @@ namespace DevPlugin
         public Form1()
         {
             InitializeComponent();
+            button4.Visible = false;
+            button5.Visible = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -43,8 +45,16 @@ namespace DevPlugin
                 }
                     a++;
             }
+            try
+            {
+                Directory.GetFiles(path1 + "\\simple-plugin");
+            }
+            catch
+            {
+                MessageBox.Show("DirectoryNotFoundException", "Erorr!");
+                this.Close();
+            }
 
-           
         }
 
         public bool change (string seek, string text)
@@ -72,8 +82,28 @@ namespace DevPlugin
             }
             return f;
         }
+        public void Create(string a)
+        {
+            string filenameTCG = $"{a}\\TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj";
+            string filenameSLN = $"{a}\\TCG.{textBox1.Text}.sln";
+            string filenameAPINI = $"{a}\\Appinfo.ini";
+            string filenameAssemblyInfo = $"{a}\\TCG.{textBox1.Text}\\Properties\\AssemblyInfo.cs";
+            string filenameResourcesDesigner = $"{a}\\TCG.{textBox1.Text}\\Properties\\Resources.Designer.cs";
+
+            string filenamePlugincs = $"{a}\\TCG.{textBox1.Text}\\Plugin.cs";
+            string filenamePlugin = $"{a}\\TCG.{textBox1.Text}\\plugin.xml";
+            string filenameCSpro = $"{a}\\TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj.user";
+            string filenameWorkstep1 = $"{a}\\TCG.{textBox1.Text}\\Workstep1.cs";
+            string filenameWorkstep1UI = $"{a}\\TCG.{textBox1.Text}\\Workstep1UI.cs";
+            string filename1UIDesigner = $"{a}\\TCG.{textBox1.Text}\\Workstep1UI.Designer.cs";
+        }
         private void button1_Click(object sender, EventArgs e)
         {
+            FolderBrowserDialog FBD = new FolderBrowserDialog();
+            if (FBD.ShowDialog() == DialogResult.OK)
+            {
+                path = FBD.SelectedPath;
+            }
             string[] TCGClines = new string[500];
             string[] linesSLN = new string[500];
             string[] linesAPINI = new string[500];
@@ -135,7 +165,7 @@ namespace DevPlugin
                 linesResourcesDesigner[41] = $"                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(\"TCG.{textBox1.Text}.Properties.Resources\", typeof(Resources).Assembly);";
                 linesResourcesDesigner[64] = $"        ///AppName={textBox1.Text}";
                 linesResourcesDesigner[66] = $"        ///Version={textBox4.Text}";
-                linesResourcesDesigner[67] = $"        ///PetrelVersion={comboBox1.Text}.{textBox2.Text}(64-bit).";
+                linesResourcesDesigner[67] = $"        ///PetrelVersion={comboBox1.Text}(64-bit).";
 
                 linesPlugincs[5] = $"namespace TCG.{textBox1.Text}";
                 linesPlugincs[11] = $"            get {{ return \"{textBox4.Text}\"; }}";
@@ -229,7 +259,7 @@ namespace DevPlugin
 
                     linesAPINI[1] = $"AppName={textBox1.Text}";
                     linesAPINI[3] = $"Version={textBox4.Text}";
-                    linesAPINI[4] = $"PetrelVersion={comboBox1.Text}.{textBox2.Text}(64-bit)";
+                    linesAPINI[4] = $"PetrelVersion={comboBox1.Text}";
                 }
 
                 Directory.CreateDirectory($"{path}\\{textBox1.Text}");
@@ -270,12 +300,7 @@ namespace DevPlugin
         
         private void textBox3_MouseClick(object sender, MouseEventArgs e)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                path = dialog.SelectedPath;
-                textBox3.Text = path;
-            }
+            
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -296,6 +321,104 @@ namespace DevPlugin
         private void label7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            button1.Visible = true;
+            button4.Visible = false;
+            button5.Visible = false;
+        }
+
+        string[] AppChange = new string[200];
+        string filenameChange = "";
+        private void button3_Click(object sender, EventArgs e)
+        {
+            button1.Visible=false;
+            button4.Visible = true;
+            button5.Visible = true;
+            OpenFileDialog filed = new OpenFileDialog();
+            if(filed.ShowDialog() == DialogResult.OK)
+            {
+                string pathChang = filed.FileName;
+                string pathth = "";
+                for (int i = pathChang.Length - 1; i > 0; i--)
+                {
+                    int th = pathChang.Length - 1;
+                    if (pathChang[i] == '.')
+                    {
+                        for (int i1 = i + 1; i1 < th + 1; i1++)
+                        {
+                            pathth += pathChang[i1];
+                        }
+                        break;
+                    }
+                }
+
+                if (pathth != "sln")
+                {
+                    MessageBox.Show("Wrong project file, select \"sln\" file");
+                    button3_Click(sender, e);
+                }
+                else
+                {
+                    for (int i = pathChang.Length - 1; i > 0; i--)
+                    {
+                        if (pathChang[i] == '\\')
+                        {
+                            pathChang = pathChang.Substring(0, i);
+                            break;
+                        }
+                    }
+                    filenameChange = $"{pathChang}\\Appinfo.ini";
+                    try
+                    {
+                        AppChange = WriteF(filenameChange);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Wrong project file");
+                        button3_Click(sender, e);
+                    }
+                    for (int i1 = 1; i1 < AppChange.Length; i1++)
+                    {
+                        string[] name = AppChange[1].Split('=');
+
+                        textBox1.Text = name[1];
+                    }
+                    for (int i1 = 1; i1 < AppChange.Length; i1++)
+                    {
+                        string[] name = AppChange[3].Split('=');
+
+                        textBox4.Text = name[1];
+                    }
+                    for (int i1 = 1; i1 < AppChange.Length; i1++)
+                    {
+                        string[] name = AppChange[4].Split('=');
+
+                        comboBox1.Text = name[1];
+                    }
+
+                }
+
+            }
+            
+           
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog open = new SaveFileDialog();
+            open.FileName = textBox1.Text;
+            open.ShowDialog();
+            MessageBox.Show(open.FileName);
+
+            Create(pathChang);
         }
     }
 }
