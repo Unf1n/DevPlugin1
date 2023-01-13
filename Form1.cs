@@ -82,6 +82,17 @@ namespace DevPlugin
             }
             return f;
         }
+        string[] TCGClines = new string[500];
+        string[] linesSLN = new string[500];
+        string[] linesAPINI = new string[500];
+        string[] linesAssemblyInfo = new string[500];
+        string[] linesResourcesDesigner = new string[500];
+        string[] linesPlugincs = new string[500];
+        string[] linesPlugin = new string[500];
+        string[] linesCSpro = new string[500];
+        string[] linesWorkstep1 = new string[500];
+        string[] linesWorkstep1UI = new string[500];
+        string[] linesWorkstep1UIDesigner = new string[500];
         public void Create(string a)
         {
             string filenameTCG = $"{a}\\TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj";
@@ -96,6 +107,19 @@ namespace DevPlugin
             string filenameWorkstep1 = $"{a}\\TCG.{textBox1.Text}\\Workstep1.cs";
             string filenameWorkstep1UI = $"{a}\\TCG.{textBox1.Text}\\Workstep1UI.cs";
             string filename1UIDesigner = $"{a}\\TCG.{textBox1.Text}\\Workstep1UI.Designer.cs";
+
+            TCGClines = WriteF(filenameTCG);
+            linesSLN = WriteF(filenameSLN);
+            linesAPINI = WriteF(filenameAPINI);
+            linesAssemblyInfo = WriteF(filenameAssemblyInfo);
+            linesResourcesDesigner = WriteF(filenameResourcesDesigner);
+            linesPlugincs = WriteF(filenamePlugincs);
+            linesPlugin = WriteF(filenamePlugin);
+            linesCSpro = WriteF(filenameCSpro);
+            linesWorkstep1 = WriteF(filenameWorkstep1);
+            linesWorkstep1UI = WriteF(filenameWorkstep1UI);
+            linesWorkstep1UIDesigner = WriteF(filename1UIDesigner);
+
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -104,21 +128,6 @@ namespace DevPlugin
             {
                 path = FBD.SelectedPath;
             }
-            string[] TCGClines = new string[500];
-            string[] linesSLN = new string[500];
-            string[] linesAPINI = new string[500];
-            string[] linesAssemblyInfo = new string[500];
-            string[] linesResourcesDesigner = new string[500];
-            string[] linesPlugincs = new string[500];
-            string[] linesPlugin = new string[500];
-            string[] linesCSpro = new string[500];
-            string[] linesWorkstep1 = new string[500];
-            string[] linesWorkstep1UI = new string[500];
-            string[] linesWorkstep1UIDesigner = new string[500];
-
-
-
-
 
             if (path == "")
             {
@@ -250,8 +259,17 @@ namespace DevPlugin
                     if (TCGClines[i].IndexOf("<HintPath>c:\\program files\\schlumberger\\petrel 2013\\Public\\Slb.Ocean.Geometry.dll</HintPath>") > 0)
                         TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\Slb.Ocean.Geometry.dll</HintPath>";
 
-                    TCGClines[176] = $"\"%25OCEAN{comboBox1.Text}HOME%25\\PluginPackager.exe\" / g \"$(TargetPath)\" \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{comboBox1.Text}HOME_x64%25\\petrel.exe\"";
-                    TCGClines[177] = $"\"%25OCEAN{comboBox1.Text}HOME%25\\PluginPackager.exe\" /m \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{comboBox1.Text}HOME_x64%25\\petrel.exe\" \"$(TargetDir)\"</PostBuildEvent>";
+                    string text = TCGClines[176];
+                    string pat = @"""%25OCEAN(\w+?)HOME%25\\PluginPackager\.exe"" /g ""\$\(TargetPath\)"" ""\$\(ProjectDir\)\\plugin\.xml"" ""%25OCEAN(\w+?)HOME_x64%25\\petrel\.exe"; ;
+
+                    Regex r = new Regex(pat);
+
+                    Match m = r.Match(text);
+                    if(i == 176)
+                    MessageBox.Show(TCGClines[176], m.Success.ToString());
+
+                   // TCGClines[176] = $"\"%25OCEAN{comboBox1.Text}HOME%25\\PluginPackager.exe\" / g \"$(TargetPath)\" \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{comboBox1.Text}HOME_x64%25\\petrel.exe\"";
+                    //TCGClines[177] = $"\"%25OCEAN{comboBox1.Text}HOME%25\\PluginPackager.exe\" /m \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{comboBox1.Text}HOME_x64%25\\petrel.exe\" \"$(TargetDir)\"</PostBuildEvent>";
 
                 }
                 for (int i = 1; i < linesAPINI.Length; i++)
@@ -418,7 +436,6 @@ namespace DevPlugin
             open.ShowDialog();
             MessageBox.Show(open.FileName);
 
-            Create(pathChang);
         }
     }
 }
