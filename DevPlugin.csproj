@@ -202,6 +202,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\49198ca9-2e2d-46ae-be81-9d580d2510b5.vsidx" />
     <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\e6c3cf6e-dc60-47bf-9431-9e9804f9d360.vsidx" />
@@ -241,6 +242,12 @@
     <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin\plugin.xml" />
     <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Resources\Logo_Timal_Final32x32.png" />
     <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin\TCG.SimplePlugin.csproj.user" />
+    <None Include="Resources\icons8-folder-150.png" />
+    <None Include="Resources\icons8-opened-folder-601.png" />
+    <None Include="Resources\icons8-plus-60.png" />
+    <None Include="Resources\icons8-save-64.png" />
+    <None Include="Resources\icons8-logout-60.png" />
+    <None Include="Resources\icons8-opened-folder-60.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
