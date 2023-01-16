@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.LinkLabel;
@@ -27,21 +28,21 @@ namespace DevPlugin
 
         private void Form1_Load(object sender, EventArgs e)
         {
-          
+
             string[] args = Environment.GetCommandLineArgs();
-            int a=0;
+            int a = 0;
             foreach (string arg in args)
             {
                 if (a == 0)
                 {
-                    path1= arg;
+                    path1 = arg;
                     int len = path1.IndexOf("\\DevPlugin.exe");
                     if (len > 0)
                     {
-                        path1 = path1.Substring(0,len);
+                        path1 = path1.Substring(0, len);
                     }
                 }
-                    a++;
+                a++;
             }
             try
             {
@@ -54,14 +55,14 @@ namespace DevPlugin
             }
 
         }
-       // string[] TCGClines1 = new string[2];
+        // string[] TCGClines1 = new string[2];
 
-        public bool change (string seek, string text)
+        public bool change(string seek, string text)
         {
-                if (Regex.IsMatch(text, seek))
-                {
-                   return true;
-                }
+            if (Regex.IsMatch(text, seek))
+            {
+                return true;
+            }
             return false;
         }
         public string[] WriteF(string file)
@@ -82,7 +83,9 @@ namespace DevPlugin
             return f;
         }
         string[] TCGClines = new string[500];
+        string[] linesModu = new string[500];
         string[] linesSLN = new string[500];
+        string[] linesSTD = new string[500];
         string[] linesAPINI = new string[500];
         string[] linesAssemblyInfo = new string[500];
         string[] linesResourcesDesigner = new string[500];
@@ -92,27 +95,30 @@ namespace DevPlugin
         string[] linesWorkstep1 = new string[500];
         string[] linesWorkstep1UI = new string[500];
         string[] linesWorkstep1UIDesigner = new string[500];
-        public void Create(string a)
+        public void Create(string a, string b)
         {
             #region var
-            string filenameTCG = $"{a}\\TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj";
-            string filenameSLN = $"{a}\\TCG.{textBox1.Text}.sln";
+            string filenameTCG = $"{a}\\TCG.{b}\\TCG.{b}.csproj";
+            string filenameModu = $"{a}\\TCG.{b}\\Module.cs";
+            string filenameSLN = $"{a}\\TCG.{b}.sln";
             string filenameAPINI = $"{a}\\Appinfo.ini";
-            string filenameAssemblyInfo = $"{a}\\TCG.{textBox1.Text}\\Properties\\AssemblyInfo.cs";
-            string filenameResourcesDesigner = $"{a}\\TCG.{textBox1.Text}\\Properties\\Resources.Designer.cs";
-
-            string filenamePlugincs = $"{a}\\TCG.{textBox1.Text}\\Plugin.cs";
-            string filenamePlugin = $"{a}\\TCG.{textBox1.Text}\\plugin.xml";
-            string filenameCSpro = $"{a}\\TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj.user";
-            string filenameWorkstep1 = $"{a}\\TCG.{textBox1.Text}\\Workstep1.cs";
-            string filenameWorkstep1UI = $"{a}\\TCG.{textBox1.Text}\\Workstep1UI.cs";
-            string filename1UIDesigner = $"{a}\\TCG.{textBox1.Text}\\Workstep1UI.Designer.cs";
+            string filenameAssemblyInfo = $"{a}\\TCG.{b}\\Properties\\AssemblyInfo.cs";
+            string filenameResourcesDesigner = $"{a}\\TCG.{b}\\Properties\\Resources.Designer.cs";
+            string filenameSTD = $"{a}\\TCG.{b}\\Properties\\Settings.Designer.cs";
+            string filenamePlugincs = $"{a}\\TCG.{b}\\Plugin.cs";
+            string filenamePlugin = $"{a}\\TCG.{b}\\plugin.xml";
+            string filenameCSpro = $"{a}\\TCG.{b}\\TCG.{b}.csproj.user";
+            string filenameWorkstep1 = $"{a}\\TCG.{b}\\Workstep1.cs";
+            string filenameWorkstep1UI = $"{a}\\TCG.{b}\\Workstep1UI.cs";
+            string filename1UIDesigner = $"{a}\\TCG.{b}\\Workstep1UI.Designer.cs";
 
             TCGClines = WriteF(filenameTCG);
+            linesModu = WriteF(filenameModu);
             linesSLN = WriteF(filenameSLN);
             linesAPINI = WriteF(filenameAPINI);
             linesAssemblyInfo = WriteF(filenameAssemblyInfo);
             linesResourcesDesigner = WriteF(filenameResourcesDesigner);
+            linesSTD = WriteF(filenameSTD);
             linesPlugincs = WriteF(filenamePlugincs);
             linesPlugin = WriteF(filenamePlugin);
             linesCSpro = WriteF(filenameCSpro);
@@ -134,6 +140,8 @@ namespace DevPlugin
             }
             for (int i = 1; i < linesResourcesDesigner.Length; i++)
             {
+                if (change(@"namespace TCG.(\w+)", linesResourcesDesigner[i]))
+                    linesResourcesDesigner[i] = $"namespace TCG.{textBox1.Text}.Properties {{";
                 if (change(@"global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager\(""TCG.(\w+?).Properties.Resources"", typeof\(Resources\).Assembly\);", linesResourcesDesigner[i]))
                     linesResourcesDesigner[i] = $"                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(\"TCG.{textBox1.Text}.Properties.Resources\", typeof(Resources).Assembly);";
                 if (change(@"///AppName=(\w+)", linesResourcesDesigner[i]))
@@ -142,6 +150,11 @@ namespace DevPlugin
                     linesResourcesDesigner[i] = $"        ///Version={textBox4.Text}";
                 if (change(@"///PetrelVersion=(\w+?.\w+?)\(64-bit\)", linesResourcesDesigner[i]))
                     linesResourcesDesigner[i] = $"        ///PetrelVersion={comboBox1.Text}.";
+            }
+            for (int i = 1; i < linesSTD.Length; i++)
+            {
+                if (change(@"namespace TCG.(\w+)", linesSTD[i]))
+                    linesSTD[i] = $"namespace TCG.{textBox1.Text}.Properties {{";
             }
             for (int i = 1; i < linesPlugincs.Length; i++)
             {
@@ -218,40 +231,54 @@ namespace DevPlugin
                     linesSLN[i] = $"\t\tSolutionGuid = {{{Guid.NewGuid().ToString()}}}";
 
             }
+            for (int i = 0; i < linesModu.Length; i++)
+            {
+                if (change(@"namespace TCG.(\w+)", linesModu[i]))
+                    linesModu[i] = $"namespace TCG.{textBox1.Text}";
+            }
+            string vp = "";
+            for (int i = comboBox1.Text.Length - 1; i > 0; i--)
+            {
+                if (comboBox1.Text[i] == '.')
+                {
+                    vp = comboBox1.Text.Substring(0, i);
+                    break;
+                }
+            }
             for (int i = 1; i < TCGClines.Length; i++)
             {
-                if (change("<RootNamespace>(\\w+?.\\w+?)</RootNamespace>", TCGClines[i]))
+                if (change(@"<RootNamespace>(\w+?.\w+?)</RootNamespace>", TCGClines[i]))
                     TCGClines[i] = $"    <RootNamespace>TCG.{textBox1.Text}</RootNamespace>";
-                if (change("<AssemblyName>(\\w+?.\\w+?)</AssemblyName>", TCGClines[i]))
+                if (change(@"<AssemblyName>(\w+?.\w+?)</AssemblyName>", TCGClines[i]))
                     TCGClines[i] = $"    <AssemblyName>TCG.{textBox1.Text}</AssemblyName>";
-                if (change("<ProductVersion>(\\w+?.\\w+?.\\w+?)</ProductVersion>", TCGClines[i]))
+                if (change(@"<ProductVersion>(\w+?.\w+?.\w+?)</ProductVersion>", TCGClines[i]))
                     TCGClines[i] = $"    <ProductVersion>{textBox4.Text}</ProductVersion>";
-                if (change("<ProjectGuid>{(\\w+?-\\w+?-\\w+?-\\w+?-\\w+?)}</ProjectGuid>", TCGClines[i]))
+                if (change(@"<ProjectGuid>{(\w+?-\w+?-\w+?-\w+?-\w+?)}</ProjectGuid>", TCGClines[i]))
                     TCGClines[i] = $"    <ProjectGuid>{{{strid1}}}</ProjectGuid>";
-                if (change("<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\\w+?)\\Public\\Slb.Ocean.Data.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Data.dll</HintPath>";
-                if (change("<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\\w+?)\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>>";
-                if (change("<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\\w+?)\\Public\\Slb.Ocean.Petrel.Modeling.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Slb.Ocean.Petrel.Modeling.dll</HintPath>";
-                if (change("<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\\w+?)\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>";
-                if (change("<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\\w+?)\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>";
-                if (change("<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\\w+?)\\Public\\Slb.Ocean.Units.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {comboBox1.Text}\\Public\\Slb.Ocean.Units.dll</HintPath>";
-                if (change("<HintPath>c:\\program files\\schlumberger\\petrel (\\w+?)\\Public\\slb.ocean.core.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\slb.ocean.core.dll</HintPath>";
-                if (change("<HintPath>c:\\program files\\schlumberger\\petrel (\\w+?)\\Public\\slb.ocean.petrel.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\slb.ocean.petrel</HintPath>";
-                if (change("<HintPath>c:\\program files\\schlumberger\\petrel (\\w+?)\\Public\\Slb.Ocean.Basics.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\Slb.Ocean.Basics.dll</HintPath>";
-                if (change("<HintPath>c:\\program files\\schlumberger\\petrel (\\w+?)\\Public\\Slb.Ocean.Geometry.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {comboBox1.Text}\\Public\\Slb.Ocean.Geometry.dll</HintPath>";
+                if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+)\\Public\\Slb.Ocean.Data.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Data.dll</HintPath>";
+                if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>>";
+                if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.Modeling.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Slb.Ocean.Petrel.Modeling.dll</HintPath>";
+                if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>";
+                if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>";
+                if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Units.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Units.dll</HintPath>";
+                if (change(@"<HintPath>c:\\program files\\schlumberger\\petrel (\w+?)\\Public\\slb.ocean.core.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {vp}\\Public\\slb.ocean.core.dll</HintPath>";
+                if (change(@"<HintPath>c:\\program files\\schlumberger\\petrel (\w+?)\\Public\\slb.ocean.petrel.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {vp}\\Public\\slb.ocean.petrel</HintPath>";
+                if (change(@"<HintPath>c:\\program files\\schlumberger\\petrel (\w+?)\\Public\\Slb.Ocean.Basics.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {vp}\\Public\\Slb.Ocean.Basics.dll</HintPath>";
+                if (change(@"<HintPath>c:\\program files\\schlumberger\\petrel (\w+?)\\Public\\Slb.Ocean.Geometry.dll</HintPath>", TCGClines[i]))
+                    TCGClines[i] = $"<HintPath>c:\\program files\\schlumberger\\petrel {vp}\\Public\\Slb.Ocean.Geometry.dll</HintPath>";
                 if (change(@"""%25OCEAN(\w+?)HOME%25\\PluginPackager\.exe"" /g ""\$\(TargetPath\)"" ""\$\(ProjectDir\)\\plugin\.xml"" ""%25OCEAN(\w+?)HOME_x64%25\\petrel\.exe""", TCGClines[i]))
-                    TCGClines[i] = $"\"%25OCEAN{comboBox1.Text}HOME%25\\PluginPackager.exe\" / g \"$(TargetPath)\" \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{comboBox1.Text}HOME_x64%25\\petrel.exe\"";
+                    TCGClines[i] = $"\"%25OCEAN{vp}HOME%25\\PluginPackager.exe\" / g \"$(TargetPath)\" \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{vp}HOME_x64%25\\petrel.exe\"";
                 if (change(@"""%25OCEAN(\w+?)HOME%25\\PluginPackager.exe"" /m ""\$\(ProjectDir\)\\plugin.xml"" ""%25OCEAN(\w+?)HOME_x64%25\\petrel.exe"" ""\$\(TargetDir\)""</PostBuildEvent>", TCGClines[i]))
-                    TCGClines[i] = $"\"%25OCEAN{comboBox1.Text}HOME%25\\PluginPackager.exe\" /m \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{comboBox1.Text}HOME_x64%25\\petrel.exe\" \"$(TargetDir)\"</PostBuildEvent>";
+                    TCGClines[i] = $"\"%25OCEAN{vp}HOME%25\\PluginPackager.exe\" /m \"$(ProjectDir)\\plugin.xml\" \"%25OCEAN{vp}HOME_x64%25\\petrel.exe\" \"$(TargetDir)\"</PostBuildEvent>";
             }
             for (int i = 1; i < linesAPINI.Length; i++)
             {
@@ -317,7 +344,7 @@ namespace DevPlugin
                 for (int i = 1; i < linesAssemblyInfo.Length; i++)
                 {
                     if (change(@"\[assembly: AssemblyTitle\(""TCG.(\w+?)""\)\]", linesAssemblyInfo[i]))
-                        linesAssemblyInfo[i] = $"[assembly: AssemblyTitle(\"TCG.{textBox1.Text}\")]"; 
+                        linesAssemblyInfo[i] = $"[assembly: AssemblyTitle(\"TCG.{textBox1.Text}\")]";
                     if (change(@"\[assembly: AssemblyProduct\(""TCG.(\w+?)""\)\]", linesAssemblyInfo[i]))
                         linesAssemblyInfo[i] = $"[assembly: AssemblyProduct(\"TCG.{textBox1.Text}\")]";
                     if (change(@"\[assembly: Guid\(""(\w+?-\w+?-\w+?-\w+?-\w+?)""\)\]", linesAssemblyInfo[i]))
@@ -448,7 +475,7 @@ namespace DevPlugin
                 {
                     if (change(@"AppName=(\w+)", linesAPINI[i]))
                         linesAPINI[i] = $"AppName={textBox1.Text}";
-                        linesAPINI[i] = $"Version={textBox4.Text}";
+                    linesAPINI[i] = $"Version={textBox4.Text}";
                     if (change(@"Version=(\w+?).(\w+?).(\w+)", linesAPINI[i]))
                         linesAPINI[i] = $"Version={textBox4.Text}";
                     if (change(@"PetrelVersion=(\w+?).(\w+?)\(64-bit\)", linesAPINI[i]))
@@ -460,7 +487,7 @@ namespace DevPlugin
                 Directory.CreateDirectory($"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Properties");
                 Directory.CreateDirectory($"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Resources");
 
-                File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Resources.resx", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Properties\\Resources.resx",true);
+                File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Resources.resx", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Properties\\Resources.resx", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Settings.Designer.cs", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Properties\\Settings.Designer.cs", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Settings.settings", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Properties\\Settings.settings", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\app.config", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\app.config", true);
@@ -483,17 +510,17 @@ namespace DevPlugin
                 File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\Workstep1UI.cs", linesWorkstep1UI);
                 File.AppendAllLines($@"{path}\{textBox1.Text}\TCG.{textBox1.Text}\Workstep1UI.Designer.cs", linesWorkstep1UIDesigner);
 
-                File.AppendAllLines($"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj",TCGClines);
+                File.AppendAllLines($"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj", TCGClines);
                 File.AppendAllLines($"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}.sln", linesSLN);
                 File.AppendAllLines($"{path}\\{textBox1.Text}\\Appinfo.ini", linesAPINI);
 
 
             }
         }
-        
+
         private void textBox3_MouseClick(object sender, MouseEventArgs e)
         {
-            
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -531,13 +558,14 @@ namespace DevPlugin
 
         string[] AppChange = new string[200];
         string filenameChange = "";
+        string pathChang = "";
         private void button3_Click(object sender, EventArgs e)
         {
-            button1.Visible=false;
+            button1.Visible = false;
             OpenFileDialog filed = new OpenFileDialog();
-            if(filed.ShowDialog() == DialogResult.OK)
+            if (filed.ShowDialog() == DialogResult.OK)
             {
-                string pathChang = filed.FileName;
+                pathChang = filed.FileName;
                 string pathth = "";
                 for (int i = pathChang.Length - 1; i > 0; i--)
                 {
@@ -599,16 +627,67 @@ namespace DevPlugin
                 }
 
             }
-            
-           
+
+
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            string lastname = "";
             SaveFileDialog open = new SaveFileDialog();
             open.FileName = textBox1.Text;
             open.ShowDialog();
-            MessageBox.Show(open.FileName);
+            for (int i = pathChang.Length - 1; i > 0; i--)
+            {
+                int th = pathChang.Length - 1;
+                if (pathChang[i] == '\\')
+                {
+                    for (int i1 = i + 1; i1 < th + 1; i1++)
+                    {
+                        lastname += pathChang[i1];
+                    }
+                    break;
+                }
+            }
+            #region Copy Folder
+            Process proc = new Process();
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.FileName = @"C:\WINDOWS\system32\xcopy.exe";
+            proc.StartInfo.Arguments = $"{pathChang} {open.FileName} /E /I";
+            proc.Start();
+            #endregion
+            Thread.Sleep(2000);
+            Create(pathChang, lastname);
+            System.IO.Directory.Move($"{open.FileName}\\TCG.{lastname}", $"{open.FileName}\\TCG.{textBox1.Text}");
+            File.Delete($"{open.FileName}\\Appinfo.ini");
+            File.Delete($"{open.FileName}\\TCG.{lastname}.sln");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\TCG.{lastname}.csproj");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\TCG.{lastname}.csproj.user");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Module.cs");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Plugin.cs");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\plugin.xml");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1.cs");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1UI.cs");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1UI.Designer.cs");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\AssemblyInfo.cs");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\Resources.Designer.cs");
+            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\Settings.Designer.cs");
+
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\AssemblyInfo.cs", linesAssemblyInfo);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\Resources.Designer.cs", linesResourcesDesigner);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\Settings.Designer.cs", linesSTD);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Plugin.cs", linesPlugincs);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\plugin.xml", linesPlugin);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\TCG.{textBox1.Text}.csproj.user", linesCSpro);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1.cs", linesWorkstep1);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1UI.cs", linesWorkstep1UI);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1UI.Designer.cs", linesWorkstep1UIDesigner);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\TCG.{textBox1.Text}.csproj", TCGClines);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}.sln", linesSLN);
+            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Module.cs", linesModu);
+            File.AppendAllLines($@"{open.FileName}\Appinfo.ini", linesAPINI);
+
+
 
         }
 
