@@ -258,9 +258,9 @@ namespace DevPlugin
                 if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+)\\Public\\Slb.Ocean.Data.dll</HintPath>", TCGClines[i]))
                     TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Data.dll</HintPath>";
                 if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>>";
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Petrel.Geology.dll</HintPath>";
                 if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.Modeling.dll</HintPath>", TCGClines[i]))
-                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Slb.Ocean.Petrel.Modeling.dll</HintPath>";
+                    TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Petrel.Modeling.dll</HintPath>";
                 if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>", TCGClines[i]))
                     TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Petrel.UI.Controls.dll</HintPath>";
                 if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+?)\\Public\\Slb.Ocean.Petrel.Well.dll</HintPath>", TCGClines[i]))
@@ -634,58 +634,75 @@ namespace DevPlugin
         private void button5_Click(object sender, EventArgs e)
         {
             string lastname = "";
+            string newname = "";
             SaveFileDialog open = new SaveFileDialog();
             open.FileName = textBox1.Text;
-            open.ShowDialog();
-            for (int i = pathChang.Length - 1; i > 0; i--)
+            if (open.ShowDialog() != DialogResult.Cancel)
             {
-                int th = pathChang.Length - 1;
-                if (pathChang[i] == '\\')
+                for (int i = pathChang.Length - 1; i > 0; i--)
                 {
-                    for (int i1 = i + 1; i1 < th + 1; i1++)
+                    int th = pathChang.Length - 1;
+                    if (pathChang[i] == '\\')
                     {
-                        lastname += pathChang[i1];
+                        for (int i1 = i + 1; i1 < th + 1; i1++)
+                        {
+                            lastname += pathChang[i1];
+                        }
+                        break;
                     }
-                    break;
                 }
-            }
-            #region Copy Folder
-            Process proc = new Process();
-            proc.StartInfo.UseShellExecute = true;
-            proc.StartInfo.FileName = @"C:\WINDOWS\system32\xcopy.exe";
-            proc.StartInfo.Arguments = $"{pathChang} {open.FileName} /E /I";
-            proc.Start();
-            #endregion
-            Thread.Sleep(2000);
-            Create(pathChang, lastname);
-            System.IO.Directory.Move($"{open.FileName}\\TCG.{lastname}", $"{open.FileName}\\TCG.{textBox1.Text}");
-            File.Delete($"{open.FileName}\\Appinfo.ini");
-            File.Delete($"{open.FileName}\\TCG.{lastname}.sln");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\TCG.{lastname}.csproj");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\TCG.{lastname}.csproj.user");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Module.cs");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Plugin.cs");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\plugin.xml");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1.cs");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1UI.cs");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1UI.Designer.cs");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\AssemblyInfo.cs");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\Resources.Designer.cs");
-            File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\Settings.Designer.cs");
+                for (int i = open.FileName.Length - 1; i > 0; i--)
+                {
+                    int th = open.FileName.Length - 1;
+                    if (open.FileName[i] == '\\')
+                    {
+                        for (int i1 = i + 1; i1 < th + 1; i1++)
+                        {
+                            newname += open.FileName[i1];
+                        }
+                        break;
+                    }
+                }
+                textBox1.Text = newname;
+                #region Copy Folder
+                Process proc = new Process();
+                proc.StartInfo.UseShellExecute = true;
+                proc.StartInfo.FileName = @"C:\WINDOWS\system32\xcopy.exe";
+                proc.StartInfo.Arguments = $"{pathChang} {open.FileName} /E /I";
+                proc.Start();
+                #endregion
+                Thread.Sleep(2000);
+                Create(pathChang, lastname);
+                System.IO.Directory.Move($"{open.FileName}\\TCG.{lastname}", $"{open.FileName}\\TCG.{textBox1.Text}");
+                File.Delete($"{open.FileName}\\Appinfo.ini");
+                File.Delete($"{open.FileName}\\TCG.{lastname}.sln");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\TCG.{lastname}.csproj");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\TCG.{lastname}.csproj.user");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Module.cs");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Plugin.cs");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\plugin.xml");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1.cs");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1UI.cs");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Workstep1UI.Designer.cs");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\AssemblyInfo.cs");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\Resources.Designer.cs");
+                File.Delete($"{open.FileName}\\TCG.{textBox1.Text}\\Properties\\Settings.Designer.cs");
 
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\AssemblyInfo.cs", linesAssemblyInfo);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\Resources.Designer.cs", linesResourcesDesigner);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\Settings.Designer.cs", linesSTD);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Plugin.cs", linesPlugincs);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\plugin.xml", linesPlugin);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\TCG.{textBox1.Text}.csproj.user", linesCSpro);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1.cs", linesWorkstep1);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1UI.cs", linesWorkstep1UI);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1UI.Designer.cs", linesWorkstep1UIDesigner);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\TCG.{textBox1.Text}.csproj", TCGClines);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}.sln", linesSLN);
-            File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Module.cs", linesModu);
-            File.AppendAllLines($@"{open.FileName}\Appinfo.ini", linesAPINI);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\AssemblyInfo.cs", linesAssemblyInfo);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\Resources.Designer.cs", linesResourcesDesigner);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Properties\Settings.Designer.cs", linesSTD);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Plugin.cs", linesPlugincs);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\plugin.xml", linesPlugin);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\TCG.{textBox1.Text}.csproj.user", linesCSpro);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1.cs", linesWorkstep1);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1UI.cs", linesWorkstep1UI);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Workstep1UI.Designer.cs", linesWorkstep1UIDesigner);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\TCG.{textBox1.Text}.csproj", TCGClines);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}.sln", linesSLN);
+                File.AppendAllLines($@"{open.FileName}\TCG.{textBox1.Text}\Module.cs", linesModu);
+                File.AppendAllLines($@"{open.FileName}\Appinfo.ini", linesAPINI);
+            }
+           
 
 
 
