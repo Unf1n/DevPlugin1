@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -25,6 +26,9 @@ namespace DevPlugin
         public Form1()
         {
             InitializeComponent();
+            saveToolStripMenuItem1.Visible = false;
+            nEWToolStripMenuItem.Visible = false;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -47,7 +51,7 @@ namespace DevPlugin
             }
             try
             {
-                Directory.GetFiles(path1 + "\\simple-plugin");
+                Directory.GetFiles(path1 + "\\SimplePlugin");
             }
             catch
             {
@@ -55,6 +59,25 @@ namespace DevPlugin
                 this.Close();
             }
 
+            textBox1.Text = "";
+            textBox4.Text = "";
+            comboBox1.Text = "";
+
+            Array.Clear(TCGClines, 0, TCGClines.Length);
+            Array.Clear(linesModu, 0, linesModu.Length);
+            Array.Clear(linesSLN, 0, linesSLN.Length);
+            Array.Clear(linesSTD, 0, linesSTD.Length);
+            Array.Clear(linesAssemblyInfo, 0, linesAssemblyInfo.Length);
+            Array.Clear(linesAPINI, 0, linesAPINI.Length);
+            Array.Clear(linesResourcesDesigner, 0, linesResourcesDesigner.Length);
+            Array.Clear(linesPlugincs, 0, linesPlugincs.Length);
+            Array.Clear(linesPlugin, 0, linesPlugin.Length);
+            Array.Clear(linesCSpro, 0, linesCSpro.Length);
+            Array.Clear(linesWorkstep1, 0, linesWorkstep1.Length);
+            Array.Clear(linesWorkstep1UI, 0, linesWorkstep1UI.Length);
+            Array.Clear(linesWorkstep1UIDesigner, 0, linesWorkstep1UIDesigner.Length);
+
+            pathChang = path1 + "\\SimplePlugin";
         }
         // string[] TCGClines1 = new string[2];
 
@@ -96,7 +119,7 @@ namespace DevPlugin
         string[] linesWorkstep1 = new string[500];
         string[] linesWorkstep1UI = new string[500];
         string[] linesWorkstep1UIDesigner = new string[500];
-        public void Create(string a, string b)
+        public void Create(string a, string b, int triger)
         {
             #region var
             string filenameTCG = $"{a}\\TCG.{b}\\TCG.{b}.csproj";
@@ -145,8 +168,15 @@ namespace DevPlugin
                     linesAssemblyInfo[i] = $"[assembly: AssemblyTitle(\"TCG.{textBox1.Text}\")]";
                 if (change(@"\[assembly: AssemblyProduct\(""TCG.(\w+?)""\)\]", linesAssemblyInfo[i]))
                     linesAssemblyInfo[i] = $"[assembly: AssemblyProduct(\"TCG.{textBox1.Text}\")]";
-                if (change(@"\[assembly: Guid\(""(\w+?-\w+?-\w+?-\w+?-\w+?)""\)\]", linesAssemblyInfo[i]))
+                if (linesAssemblyInfo[i] == "[assembly: AssemblyCopyright(\"Copyright ©  2013\")]")
+                    linesAssemblyInfo[i] = "[assembly: AssemblyCopyright(\"Copyright ©  2013\")]";
+                if (change(@"\[assembly: Guid\(""(\w+?-\w+?-\w+?-\w+?-\w+?)""\)\]", linesAssemblyInfo[i]) && triger != 1)
                     linesAssemblyInfo[i] = $"[assembly: Guid(\"{Guid.NewGuid().ToString()}\")]";
+
+                if (change(@"\[assembly: AssemblyVersion\(""(\w+.\w+.\w+.\w+)""\)\]", linesAssemblyInfo[i]))
+                    linesAssemblyInfo[i] = $"[assembly: AssemblyVersion(\"{textBox4.Text}\")]";
+                if (change(@"\[assembly: AssemblyFileVersion\(""(\w+.\w+.\w+.\w+)""\)\]", linesAssemblyInfo[i]))
+                    linesAssemblyInfo[i] = $"[assembly: AssemblyFileVersion(\"{textBox4.Text}\")]";
             }
             for (int i = 1; i < linesResourcesDesigner.Length; i++)
             {
@@ -205,7 +235,7 @@ namespace DevPlugin
             {
                 if (change(@"namespace TCG.(\w+)", linesWorkstep1[i]))
                     linesWorkstep1[i] = $"namespace TCG.{textBox1.Text}";
-                if (change(@"return ""(\w+-\w+-\w+-\w+-\w+)"";", linesWorkstep1[i]))
+                if (change(@"return ""(\w+-\w+-\w+-\w+-\w+)"";", linesWorkstep1[i]) && triger != 1)
                     linesWorkstep1[i] = $"				return \"{Guid.NewGuid().ToString()}\";";
             }
             for (int i = 1; i < linesWorkstep1UI.Length; i++)
@@ -220,24 +250,52 @@ namespace DevPlugin
             }
             for (int i = 0; i < linesSLN.Length; i++)
             {
-                if (change(@"Project\(""{(\w+?-\w+?-\w+?-\w+?-\w+?)}""\) = ""TCG.(\w+?)"", ""TCG.(\w+?)\\TCG.(\w+?).csproj"", ""{(\w+?-\w+?-\w+?-\w+?-\w+?)}""", linesSLN[i]))
+                if (change(@"Project\(""{(\w+?-\w+?-\w+?-\w+?-\w+?)}""\) = ""TCG.(\w+?)"", ""TCG.(\w+?)\\TCG.(\w+?).csproj"", ""{(\w+?-\w+?-\w+?-\w+?-\w+?)}""", linesSLN[i]) && triger != 1)
                     linesSLN[i] = $"Project(\"{{{Guid.NewGuid().ToString()}}}\") = \"TCG.{textBox1.Text}\", \"TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj\", \"{{{strid1}}}\"";
+                else if (change(@"Project\(""{(\w+?-\w+?-\w+?-\w+?-\w+?)}""\) = ""TCG.(\w+?)"", ""TCG.(\w+?)\\TCG.(\w+?).csproj"", ""{(\w+?-\w+?-\w+?-\w+?-\w+?)}""", linesSLN[i]))
+                {
+                    string c1 = "";
+                    string a1 = "";
+                    for (int i1 = 0; i1 < linesSLN[i].Length; i1++)
+                    {
+                        if (linesSLN[i][i1] == '=')
+                        {
+                            a1 = linesSLN[i].Substring(0, i1);
+                            break;
+                        }
+                    }
+                    string b1 = $"= \"TCG.{textBox1.Text}\", \"TCG.{textBox1.Text}\\TCG.{textBox1.Text}.csproj\"";
+
+                    for (int i2 = linesSLN[i].Length - 1; i2 > 0; i2--)
+                    {
+                        int th = linesSLN[i].Length - 1;
+                        if (linesSLN[i][i2] == ',')
+                        {
+                            for (int i1 = i2; i1 < th + 1; i1++)
+                            {
+                                c1 += linesSLN[i][i1];
+                            }
+                            break;
+                        }
+                    }
+
+                    linesSLN[i] = a1 + b1 + c1;
+                }
 
 
-
-                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Debug\|Any CPU.ActiveCfg = Debug\|Any CPU", linesSLN[i]))
+                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Debug\|Any CPU.ActiveCfg = Debug\|Any CPU", linesSLN[i]) && triger != 1)
                     linesSLN[i] = $"\t\t{{{strid1}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU";
-                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Debug\|Any CPU.Build.0 = Debug\|Any CPU", linesSLN[i]))
+                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Debug\|Any CPU.Build.0 = Debug\|Any CPU", linesSLN[i]) && triger != 1)
                     linesSLN[i] = $"\t\t{{{strid1}}}.Debug|Any CPU.Build.0 = Debug|Any CPU";
 
-                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Release\|Any CPU.ActiveCfg = Release\|Any CPU", linesSLN[i]))
+                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Release\|Any CPU.ActiveCfg = Release\|Any CPU", linesSLN[i]) && triger != 1)
                     linesSLN[i] = $"\t\t{{{strid1}}}.Release|Any CPU.ActiveCfg = Release|Any CPU";
 
-                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Release\|Any CPU.Build.0 = Release\|Any CPU", linesSLN[i]))
+                if (change(@"{(\w+?-\w+?-\w+?-\w+?-\w+?)}.Release\|Any CPU.Build.0 = Release\|Any CPU", linesSLN[i]) && triger != 1)
                     linesSLN[i] = $"\t\t{{{strid1}}}.Release|Any CPU.Build.0 = Release|Any CPU";
 
 
-                if (change(@"SolutionGuid = {(\w+?-\w+?-\w+?-\w+?-\w+?)}", linesSLN[i]))
+                if (change(@"SolutionGuid = {(\w+?-\w+?-\w+?-\w+?-\w+?)}", linesSLN[i]) && triger != 1)
                     linesSLN[i] = $"\t\tSolutionGuid = {{{Guid.NewGuid().ToString()}}}";
 
             }
@@ -254,7 +312,7 @@ namespace DevPlugin
                     TCGClines[i] = $"    <AssemblyName>TCG.{textBox1.Text}</AssemblyName>";
                 if (change(@"<ProductVersion>(\w+?.\w+?.\w+?)</ProductVersion>", TCGClines[i]))
                     TCGClines[i] = $"    <ProductVersion>{textBox4.Text}</ProductVersion>";
-                if (change(@"<ProjectGuid>{(\w+?-\w+?-\w+?-\w+?-\w+?)}</ProjectGuid>", TCGClines[i]))
+                if (change(@"<ProjectGuid>{(\w+?-\w+?-\w+?-\w+?-\w+?)}</ProjectGuid>", TCGClines[i]) && triger != 1)
                     TCGClines[i] = $"    <ProjectGuid>{{{strid1}}}</ProjectGuid>";
                 if (change(@"<HintPath>C:\\Program Files\\Schlumberger\\Petrel (\w+)\\Public\\Slb.Ocean.Data.dll</HintPath>", TCGClines[i]))
                     TCGClines[i] = $"<HintPath>C:\\Program Files\\Schlumberger\\Petrel {vp}\\Public\\Slb.Ocean.Data.dll</HintPath>";
@@ -296,7 +354,7 @@ namespace DevPlugin
 
 
         }
-        private void button1_Click(object sender, EventArgs e)
+       /*private void button1_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog FBD = new FolderBrowserDialog();
             if (FBD.ShowDialog() == DialogResult.OK)
@@ -310,13 +368,13 @@ namespace DevPlugin
             }
             else
             {
-                string filenameTCG = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\TCG.SimplePlugin.csproj";
-                string filenameModu = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\Module.cs";
-                string filenameSLN = $"{path1}\\simple-plugin\\TCG.SimplePlugin.sln";
-                string filenameAPINI = $"{path1}\\simple-plugin\\Appinfo.ini";
-                string filenameAssemblyInfo = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\Properties\\AssemblyInfo.cs";
-                string filenameResourcesDesigner = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\Properties\\Resources.Designer.cs";
-                string filenameSTD = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\Properties\\Settings.Designer.cs";
+                string filenameTCG = $"{path1}\\SimplePlugin\\TCG.SimplePlugin\\TCG.SimplePlugin.csproj";
+                string filenameModu = $"{path1}\\SimplePlugin\\TCG.SimplePlugin\\Module.cs";
+                string filenameSLN = $"{path1}\\SimplePlugin\\TCG.SimplePlugin.sln";
+                string filenameAPINI = $"{path1}\\SimplePlugin\\Appinfo.ini";
+                string filenameAssemblyInfo = $"{path1}\\SimplePlugin\\TCG.SimplePlugin\\Properties\\AssemblyInfo.cs";
+                string filenameResourcesDesigner = $"{path1}\\SimplePlugin\\TCG.SimplePlugin\\Properties\\Resources.Designer.cs";
+                string filenameSTD = $"{path1}\\SimplePlugin\\TCG.SimplePlugin\\Properties\\Settings.Designer.cs";
                 string filenamePlugincs = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\Plugin.cs";
                 string filenamePlugin = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\plugin.xml";
                 string filenameCSpro = $"{path1}\\simple-plugin\\TCG.SimplePlugin\\TCG.SimplePlugin.csproj.user";
@@ -361,6 +419,10 @@ namespace DevPlugin
                         linesAssemblyInfo[i] = $"[assembly: AssemblyProduct(\"TCG.{textBox1.Text}\")]";
                     if (change(@"\[assembly: Guid\(""(\w+?-\w+?-\w+?-\w+?-\w+?)""\)\]", linesAssemblyInfo[i]))
                         linesAssemblyInfo[i] = $"[assembly: Guid(\"{Guid.NewGuid().ToString()}\")]";
+                    if (change(@"\[assembly: AssemblyVersion\(""(\w+.\w+.\w+.\w+)""\)\]", linesAssemblyInfo[i]))
+                        linesAssemblyInfo[i] = $"[assembly: AssemblyVersion(\"{textBox4.Text}\")]";
+                    if (change(@"\[assembly: AssemblyFileVersion\(""(\w+.\w+.\w+.\w+)""\)\]", linesAssemblyInfo[i]))
+                        linesAssemblyInfo[i] = $"[assembly: AssemblyFileVersion(\"{textBox4.Text}\")]";
                 }
                 for (int i = 1; i < linesResourcesDesigner.Length; i++)
                 {
@@ -516,7 +578,6 @@ namespace DevPlugin
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Settings.settings", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Properties\\Settings.settings", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\app.config", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\app.config", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Fractures.key.snk", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Fractures.key.snk", true);
-                File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Module.cs", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Module.cs", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\newkey.snk", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\newkey.snk", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.resx", $"{path}\\{textBox1.Text}\\TCG.{textBox1.Text}\\Workstep1UI.resx", true);
                 File.Copy(@"C:\Users\Unf1n\Desktop\Unf1n\Проекты\DevPlugin\DevPlugin\bin\Debug\simple-plugin\build_plugin.bat", $"{path}\\{textBox1.Text}\\build_plugin.bat", true);
@@ -540,14 +601,33 @@ namespace DevPlugin
 
 
             }
-        }
+        }*/
 
         private void button2_Click(object sender, EventArgs e)
         {
+            saveToolStripMenuItem1.Visible = false;
+            nEWToolStripMenuItem.Visible = false;
+            
             textBox1.Text = "";
             textBox4.Text = "";
             comboBox1.Text = "";
-            button1.Visible = true;
+
+            Array.Clear(TCGClines, 0, TCGClines.Length);
+            Array.Clear(linesModu, 0, linesModu.Length);
+            Array.Clear(linesSLN, 0, linesSLN.Length);
+            Array.Clear(linesSTD, 0, linesSTD.Length);
+            Array.Clear(linesAssemblyInfo, 0, linesAssemblyInfo.Length);
+            Array.Clear(linesAPINI, 0, linesAPINI.Length);
+            Array.Clear(linesResourcesDesigner, 0, linesResourcesDesigner.Length);
+            Array.Clear(linesPlugincs, 0, linesPlugincs.Length);
+            Array.Clear(linesPlugin, 0, linesPlugin.Length);
+            Array.Clear(linesCSpro, 0, linesCSpro.Length);
+            Array.Clear(linesWorkstep1, 0, linesWorkstep1.Length);
+            Array.Clear(linesWorkstep1UI, 0, linesWorkstep1UI.Length);
+            Array.Clear(linesWorkstep1UIDesigner, 0, linesWorkstep1UIDesigner.Length);
+
+            pathChang = path1+"\\SimplePlugin";
+                
         }
 
         string[] AppChange = new string[200];
@@ -555,10 +635,12 @@ namespace DevPlugin
         string pathChang = "";
         private void button3_Click(object sender, EventArgs e)
         {
-            button1.Visible = false;
             OpenFileDialog filed = new OpenFileDialog();
             if (filed.ShowDialog() == DialogResult.OK)
             {
+                nEWToolStripMenuItem.Visible = true;
+                saveToolStripMenuItem1.Visible = true;
+
                 pathChang = filed.FileName;
                 string pathth = "";
                 for (int i = pathChang.Length - 1; i > 0; i--)
@@ -645,6 +727,7 @@ namespace DevPlugin
                         break;
                     }
                 }
+                MessageBox.Show(pathChang);
                 for (int i = open.FileName.Length - 1; i > 0; i--)
                 {
                     int th = open.FileName.Length - 1;
@@ -666,7 +749,7 @@ namespace DevPlugin
                 proc.Start();
                 #endregion
                 Thread.Sleep(2000);
-                Create(pathChang, lastname);
+                Create(pathChang, lastname, 0);
                 System.IO.Directory.Move($"{open.FileName}\\TCG.{lastname}", $"{open.FileName}\\TCG.{textBox1.Text}");
                 File.Delete($"{open.FileName}\\Appinfo.ini");
                 File.Delete($"{open.FileName}\\TCG.{lastname}.sln");
@@ -718,7 +801,7 @@ namespace DevPlugin
                     break;
                 }
             }
-            Create(pathChang, lastname);
+            Create(pathChang, lastname, 1);
             File.Delete($"{pathChang}\\Appinfo.ini");
             File.Delete($"{pathChang}\\TCG.{lastname}.sln");
             File.Delete($"{pathChang}\\TCG.{lastname}\\TCG.{lastname}.csproj");
@@ -754,9 +837,14 @@ namespace DevPlugin
                     break;
                 }
             }
+            try
+            {
 
-            System.IO.Directory.Move($"{pathChang}\\TCG.{lastname}", $"{pathChang}\\TCG.{textBox1.Text}");
-            System.IO.Directory.Move($"{pathChang}", $"{pathChang1}\\{textBox1.Text}");
+                System.IO.Directory.Move($"{pathChang}\\TCG.{lastname}", $"{pathChang}\\TCG.{textBox1.Text}");
+                System.IO.Directory.Move($"{pathChang}", $"{pathChang1}\\{textBox1.Text}");
+            }
+            catch(System.IO.IOException)
+            { }
         }
     }
 }

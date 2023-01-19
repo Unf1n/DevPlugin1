@@ -166,17 +166,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Module.cs" />
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Plugin.cs" />
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\AssemblyInfo.cs" />
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Resources.Designer.cs" />
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Settings.Designer.cs" />
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1.cs" />
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.cs">
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Module.cs" />
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Plugin.cs" />
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Properties\AssemblyInfo.cs" />
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Properties\Resources.Designer.cs" />
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Properties\Settings.Designer.cs" />
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Workstep1.cs" />
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Workstep1UI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.Designer.cs">
+    <Compile Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Workstep1UI.Designer.cs">
       <DependentUpon>Workstep1UI.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
@@ -187,8 +187,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Resources.resx" />
-    <EmbeddedResource Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Workstep1UI.resx">
+    <EmbeddedResource Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Properties\Resources.resx" />
+    <EmbeddedResource Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Workstep1UI.resx">
       <DependentUpon>Workstep1UI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
@@ -204,19 +204,20 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\49198ca9-2e2d-46ae-be81-9d580d2510b5.vsidx" />
-    <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\e6c3cf6e-dc60-47bf-9431-9e9804f9d360.vsidx" />
-    <None Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\read.lock" />
-    <None Include="bin\Debug\simple-plugin\AppInfo.ini" />
-    <None Include="bin\Debug\simple-plugin\build_plugin.bat" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\app.config" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Fractures.key.snk" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\newkey.snk" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\obj\Debug\TCG.SimplePlugin.csproj.AssemblyReference.cache" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Properties\Settings.settings" />
-    <None Include="bin\Debug\simple-plugin\TCG.SimplePlugin\TCG.SimplePlugin.csproj" />
+    <None Include="bin\Debug\SimplePlugin\.vs\TCG.SimplePlugin\FileContentIndex\49198ca9-2e2d-46ae-be81-9d580d2510b5.vsidx" />
+    <None Include="bin\Debug\SimplePlugin\.vs\TCG.SimplePlugin\FileContentIndex\6e5155d6-148b-4f56-85b4-07d3ac2a2855.vsidx" />
+    <None Include="bin\Debug\SimplePlugin\.vs\TCG.SimplePlugin\FileContentIndex\e6c3cf6e-dc60-47bf-9431-9e9804f9d360.vsidx" />
+    <None Include="bin\Debug\SimplePlugin\.vs\TCG.SimplePlugin\FileContentIndex\read.lock" />
+    <None Include="bin\Debug\SimplePlugin\AppInfo.ini" />
+    <None Include="bin\Debug\SimplePlugin\build_plugin.bat" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\app.config" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Fractures.key.snk" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\newkey.snk" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\obj\Debug\TCG.SimplePlugin.csproj.AssemblyReference.cache" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Properties\Settings.settings" />
+    <None Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\TCG.SimplePlugin.csproj" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -231,17 +232,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\FileContentIndex\merges\" />
-    <Folder Include="bin\Debug\simple-plugin\.vs\TCG.SimplePlugin\v17\" />
-    <Folder Include="bin\Debug\simple-plugin\bin\" />
+    <Folder Include="bin\Debug\SimplePlugin\.vs\TCG.SimplePlugin\FileContentIndex\merges\" />
+    <Folder Include="bin\Debug\SimplePlugin\.vs\TCG.SimplePlugin\v17\" />
+    <Folder Include="bin\Debug\SimplePlugin\bin\" />
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin.sln" />
-    <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin\obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
-    <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin\plugin.xml" />
-    <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin\Resources\Logo_Timal_Final32x32.png" />
-    <Content Include="bin\Debug\simple-plugin\TCG.SimplePlugin\TCG.SimplePlugin.csproj.user" />
+    <Content Include="bin\Debug\SimplePlugin\TCG.SimplePlugin.sln" />
+    <Content Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <Content Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\plugin.xml" />
+    <Content Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Resources\Logo_Timal_Final32x32.ico.ico" />
+    <Content Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\Resources\Logo_Timal_Final32x32.png" />
+    <Content Include="bin\Debug\SimplePlugin\TCG.SimplePlugin\TCG.SimplePlugin.csproj.user" />
     <None Include="Resources\icons8-folder-150.png" />
     <None Include="Resources\icons8-opened-folder-601.png" />
     <None Include="Resources\icons8-plus-60.png" />
